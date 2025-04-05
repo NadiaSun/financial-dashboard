@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CreditDataService } from '../../../core/services/credit-data.service';
 
 @Component({
   selector: 'app-table',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
-export class TableComponent {}
+export class TableComponent {
+  constructor(public creditData: CreditDataService) {
+    console.log('test2');
+  }
+}

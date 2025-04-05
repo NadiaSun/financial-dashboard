@@ -1,0 +1,75 @@
+<div class="filters">
+  <div class="filter-group">
+    <h3>Видача</h3>
+    <div class="field-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Від</mat-label>
+        <input
+          matInput
+          [matDatepicker]="issuanceStartPicker"
+          placeholder="Оберіть дату"
+          (dateChange)="changeIssuanceFrom($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="issuanceStartPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #issuanceStartPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>До</mat-label>
+        <input
+          matInput
+          [matDatepicker]="issuanceEndPicker"
+          placeholder="Оберіть дату"
+          (dateChange)="changeIssuanceTo($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="issuanceEndPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #issuanceEndPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <h3>Факт. повернення</h3>
+    <div class="field-group">
+      <mat-form-field appearance="fill">
+        <mat-label>Від</mat-label>
+        <input
+          matInput
+          [matDatepicker]="actualReturnStartPicker"
+          placeholder="Оберіть дату"
+          (dateChange)="changeReturnFrom($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="actualReturnStartPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #actualReturnStartPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>До</mat-label>
+        <input
+          matInput
+          [matDatepicker]="actualReturnEndPicker"
+          placeholder="Оберіть дату"
+          (dateChange)="changeReturnTo($event)"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="actualReturnEndPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #actualReturnEndPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="filter-group">
+    <mat-checkbox (change)="changeOverdueCredits()"
+      >Прострочені кредити</mat-checkbox
+    >
+  </div>
+</div>
