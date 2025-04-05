@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   MatDatepickerInputEvent,
   MatDatepickerModule,
@@ -20,6 +20,7 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
   providers: [provideNativeDateAdapter()],
   templateUrl: './selection-date.component.html',
   styleUrl: './selection-date.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionDateComponent {
   constructor(public creditData: CreditDataService) {}
