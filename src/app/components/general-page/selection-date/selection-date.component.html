@@ -8,6 +8,7 @@
           matInput
           [matDatepicker]="issuanceStartPicker"
           placeholder="Оберіть дату"
+          [value]="creditData.issuanceDateFrom()"
           (dateChange)="changeIssuanceFrom($event)"
         />
         <mat-datepicker-toggle
@@ -22,6 +23,7 @@
           matInput
           [matDatepicker]="issuanceEndPicker"
           placeholder="Оберіть дату"
+          [value]="creditData.issuanceDateTo()"
           (dateChange)="changeIssuanceTo($event)"
         />
         <mat-datepicker-toggle
@@ -42,6 +44,7 @@
           matInput
           [matDatepicker]="actualReturnStartPicker"
           placeholder="Оберіть дату"
+          [value]="creditData.actualReturnDateFrom()"
           (dateChange)="changeReturnFrom($event)"
         />
         <mat-datepicker-toggle
@@ -56,6 +59,7 @@
           matInput
           [matDatepicker]="actualReturnEndPicker"
           placeholder="Оберіть дату"
+          [value]="creditData.actualReturnDateTo()"
           (dateChange)="changeReturnTo($event)"
         />
         <mat-datepicker-toggle
@@ -68,7 +72,9 @@
   </div>
 
   <div class="filter-group">
-    <mat-checkbox (change)="changeOverdueCredits()"
+    <mat-checkbox
+      [checked]="creditData.overdueCredits()"
+      (change)="changeOverdueCredits()"
       >Прострочені кредити</mat-checkbox
     >
   </div>
