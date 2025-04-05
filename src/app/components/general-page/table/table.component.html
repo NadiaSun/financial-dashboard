@@ -20,32 +20,16 @@
     </tr>
   </thead>
   <tbody>
+    @for (user of creditData.filteredUser(); track user.id) {
     <tr>
-      <th scope="row">1</th>
-      <td>pageantrylamentable</td>
-      <td>2020-01-11</td>
-      <td>2020-01-25</td>
-      <td>2021-04-23</td>
-      <td>4500</td>
-      <td>32535.0</td>
+      <th scope="row">{{ user.id }}</th>
+      <td>{{ user.user }}</td>
+      <td>{{ user.issuance_date }}</td>
+      <td>{{ user.return_date }}</td>
+      <td>{{ user.actual_return_date }}</td>
+      <td>{{ user.body }}</td>
+      <td>{{ user.percent }}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>pageantrylamentable</td>
-      <td>2020-01-11</td>
-      <td>2020-01-25</td>
-      <td>2021-04-23</td>
-      <td>4500</td>
-      <td>32535.0</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>pageantrylamentable</td>
-      <td>2020-01-11</td>
-      <td>2020-01-25</td>
-      <td>2021-04-23</td>
-      <td>4500</td>
-      <td>32535.0</td>
-    </tr>
+    }
   </tbody>
 </table>
