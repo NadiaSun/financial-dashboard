@@ -5,21 +5,43 @@
     <h4 class="mb-3">Метрики по місяцях</h4>
 
     <div class="row g-4">
-      <app-information-card></app-information-card>
-      <app-information-card></app-information-card>
-      <app-information-card></app-information-card>
+      <div class="mb-4">
+        <div class="btn-group mb-4" role="group" aria-label="Метрики">
+          @for(data of metricData; track data.key) {
+          <button
+            class="btn btn-outline-primary"
+            (click)="selectMetric(data.key)"
+            [class]="{ active: activeBtn === data.key }"
+          >
+            {{ data.title }}
+          </button>
+          }
+        </div>
+        <app-information-card
+          [infoMetric]="metrics.infoMetric()"
+        ></app-information-card>
+      </div>
     </div>
   </div>
 
   <div class="row g-4">
     <div class="col-md-4 mb-4">
-      <app-top-card></app-top-card>
+      <app-top-card
+        [topUsers]="metrics.getTopUsersByCredits()"
+        [title]="'ТОП-10 за кількістю кредитів'"
+      ></app-top-card>
     </div>
     <div class="col-md-4 mb-4">
-      <app-top-card></app-top-card>
+      <app-top-card
+        [topUsers]="metrics.getTopUsersByPercent()"
+        [title]="'Топ-10 користувачів (сума відсотків)'"
+      ></app-top-card>
     </div>
     <div class="col-md-4 mb-4">
-      <app-top-card></app-top-card>
+      <app-top-card
+        [topUsers]="metrics.getTopUsersByPercentRatio()"
+        [title]="'Топ-10 користувачів (співвідношення)'"
+      ></app-top-card>
     </div>
   </div>
 </div>
