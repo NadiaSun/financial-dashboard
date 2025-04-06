@@ -27,12 +27,13 @@ export class CreditDataService {
 
       const returnDate = this.checkDate(user.return_date);
       const issuanceDate = this.checkDate(user.issuance_date);
-      const actualReturnDate = this.checkDate(user.actual_return_date);
+      const actualReturnDate = this.checkNull(user.actual_return_date);
       const issuanceDateFromFilter = this.checkNull(this.issuanceDateFrom());
       const issuanceDateToFilter = this.checkNull(this.issuanceDateTo());
       const returnDateFromFilter = this.checkNull(this.actualReturnDateFrom());
       const returnDateToFilter = this.checkNull(this.actualReturnDateTo());
       const today = new Date();
+
       if (
         issuanceDateFromFilter &&
         issuanceDate &&

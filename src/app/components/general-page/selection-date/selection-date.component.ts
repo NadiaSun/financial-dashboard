@@ -69,7 +69,7 @@ export class SelectionDateComponent {
     this.creditData.overdueCredits.update((value) => !value);
   }
 
-  public selectReturnFrom(event: NgbDate) {
+  public selectReturnFrom(event: NgbDate): void {
     const date: string = this.getDate(event);
     this.creditData.actualReturnDateFrom.set(date);
   }
