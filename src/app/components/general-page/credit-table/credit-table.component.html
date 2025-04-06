@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (user of creditData.filteredUser(); track user.id) {
+    @for (user of getPaginatedData(); track user.id) {
     <tr>
       <th scope="row">{{ user.id }}</th>
       <td>{{ user.user }}</td>
