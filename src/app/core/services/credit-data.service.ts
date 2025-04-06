@@ -28,32 +28,44 @@ export class CreditDataService {
       const returnDate = this.checkDate(user.return_date);
       const issuanceDate = this.checkDate(user.issuance_date);
       const actualReturnDate = this.checkDate(user.actual_return_date);
-      const issuanceDateFromFilter = this.checkDate(this.issuanceDateFrom());
-      const issuanceDateToFilter = this.checkDate(this.issuanceDateTo());
-      const returnDateFromFilter = this.checkDate(this.actualReturnDateFrom());
-      const returnDateToFilter = this.checkDate(this.actualReturnDateTo());
+      const issuanceDateFromFilter = this.checkNull(this.issuanceDateFrom());
+      const issuanceDateToFilter = this.checkNull(this.issuanceDateTo());
+      const returnDateFromFilter = this.checkNull(this.actualReturnDateFrom());
+      const returnDateToFilter = this.checkNull(this.actualReturnDateTo());
       const today = new Date();
-
-      if (issuanceDate) {
-        if (issuanceDateFromFilter) {
-          issuanceFilter = issuanceDateFromFilter < issuanceDate;
-        }
-        if (issuanceDateToFilter) {
-          issuanceFilter = issuanceDate < issuanceDateToFilter;
-        }
+      if (
+        issuanceDateFromFilter &&
+        issuanceDate &&
+        issuanceDate < issuanceDateFromFilter
+      ) {
+        issuanceFilter = false;
       }
 
-      if (actualReturnDate) {
-        if (returnDateFromFilter) {
-          returnFilter = returnDateFromFilter < actualReturnDate;
-        }
-        if (returnDateToFilter) {
-          returnFilter = actualReturnDate < returnDateToFilter;
-        }
+      if (
+        issuanceDateToFilter &&
+        issuanceDate &&
+        issuanceDate > issuanceDateToFilter
+      ) {
+        issuanceFilter = false;
+      }
+
+      if (
+        returnDateFromFilter &&
+        actualReturnDate &&
+        actualReturnDate < returnDateFromFilter
+      ) {
+        returnFilter = false;
+      }
+
+      if (
+        returnDateToFilter &&
+        actualReturnDate &&
+        actualReturnDate > returnDateToFilter
+      ) {
+        returnFilter = false;
       }
 
       if (this.overdueCredits()) {
-        console.log('test');
         if (actualReturnDate && returnDate) {
           overdueFilter = actualReturnDate > returnDate;
         } else if (returnDate) {
@@ -64,6 +76,13 @@ export class CreditDataService {
     });
   });
 
-  private checkDate = (date: string | null): Date | null =>
-    date ? new Date(date) : null;
+  private checkDate = (date: string): Date => new Date(date);
+
+  private checkNull(value: string | null): Date | null {
+    if (value) {
+      return this.checkDate(value);
+    } else {
+      return null;
+    }
+  }
 }

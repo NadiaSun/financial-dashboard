@@ -1,6 +1,4 @@
-import { Environment } from '../shared/interfaces/interfaces';
-
-export const environment: Environment = {
+export const environment = {
   production: true,
   apiUrl:
     'https://raw.githubusercontent.com/LightOfTheSun/front-end-coding-task-db/master/db.json',

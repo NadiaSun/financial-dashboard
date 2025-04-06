@@ -4,6 +4,7 @@ import { InfoMetric, Metric } from '../../../shared/interfaces/interfaces';
 @Component({
   selector: 'app-information-card',
   imports: [],
+  standalone: true,
   templateUrl: './information-card.component.html',
   styleUrl: './information-card.component.scss',
 })

@@ -5,12 +5,13 @@ import { MetricsService } from '../../../core/services/metrics.service';
 
 @Component({
   selector: 'app-info-container',
+  standalone: true,
   imports: [InformationCardComponent, TopCardComponent],
   templateUrl: './info-container.component.html',
   styleUrl: './info-container.component.scss',
 })
 export class InfoContainerComponent {
-  public activeBtn: string = 'credits';
+  public activeBtn: string = '';
   public metricData: { key: string; title: string }[] = [
     { key: 'credits', title: 'Загальна кількість виданих кредитів' },
     { key: 'creditAmountAverage', title: 'Середня сума видачі кредитів' },

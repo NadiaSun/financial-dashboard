@@ -17,9 +17,11 @@
           </button>
           }
         </div>
+        @if(activeBtn) {
         <app-information-card
           [infoMetric]="metrics.infoMetric()"
         ></app-information-card>
+        }
       </div>
     </div>
   </div>

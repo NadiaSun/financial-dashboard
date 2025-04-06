@@ -4,6 +4,7 @@ import {
   ITopUser,
   InfoMetric,
   Metric,
+  User,
 } from '../../shared/interfaces/interfaces';
 
 @Injectable({
@@ -52,9 +53,9 @@ export class MetricsService {
   }
 
   private collectMetric(
-    items: any[],
-    getValue: (item: any) => number,
-    filter?: (item: any) => boolean
+    items: User[],
+    getValue: (item: User) => number,
+    filter?: (item: User) => boolean
   ): { data: { [key: string]: Metric }; years: string[] } {
     const years: string[] = [];
     const data: { [key: string]: Metric } = {};
@@ -75,6 +76,25 @@ export class MetricsService {
     });
 
     return { data, years };
+  }
+
+  private getTopUsers(
+    valueSelector: (metric: User) => number,
+    filterFn: (metric: User) => boolean
+  ): ITopUser[] {
+    const userStats: Record<string, number> = {};
+
+    this.dataMetric()
+      .filter(filterFn)
+      .forEach((metric) => {
+        userStats[metric.user] =
+          (userStats[metric.user] || 0) + valueSelector(metric);
+      });
+
+    return Object.entries(userStats)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 10)
+      .map(([user, counter]) => ({ user, counter: +counter.toFixed(2) * 1 }));
   }
 
   private getCreditsByMonth(): InfoMetric {
@@ -141,44 +161,23 @@ export class MetricsService {
   }
 
   public getTopUsersByCredits(): ITopUser[] {
-    const userCounts: { [user: string]: number } = {};
-
-    this.dataMetric().forEach((metric) => {
-      userCounts[metric.user] = (userCounts[metric.user] || 0) + 1;
-    });
-
-    return Object.entries(userCounts)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10)
-      .map(([user, counter]) => ({ user, counter }));
+    return this.getTopUsers(
+      (metric) => 1,
+      () => true
+    );
   }
 
   public getTopUsersByPercent(): ITopUser[] {
-    const userPercents: { [user: string]: number } = {};
-
-    this.dataMetric().forEach((metric) => {
-      if (metric.actual_return_date) {
-        userPercents[metric.user] =
-          (userPercents[metric.user] || 0) + metric.percent;
-      }
-    });
-    return Object.entries(userPercents)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10)
-      .map(([user, counter]) => ({ user, counter }));
+    return this.getTopUsers(
+      (metric) => metric.percent,
+      (metric) => !!metric.actual_return_date
+    );
   }
 
   public getTopUsersByPercentRatio(): ITopUser[] {
-    const userRatios: { [user: string]: number } = {};
-    this.dataMetric().forEach((metric) => {
-      if (metric.actual_return_date) {
-        userRatios[metric.user] =
-          (userRatios[metric.user] || 0) + metric.percent / metric.body;
-      }
-    });
-    return Object.entries(userRatios)
-      .sort(([, a], [, b]) => b - a)
-      .slice(0, 10)
-      .map(([user, counter]) => ({ user, counter }));
+    return this.getTopUsers(
+      (metric) => metric.percent / metric.body,
+      (metric) => !!metric.actual_return_date
+    );
   }
 }

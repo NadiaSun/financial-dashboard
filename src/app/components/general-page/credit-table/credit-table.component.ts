@@ -4,9 +4,10 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
 @Component({
   selector: 'app-table',
   imports: [],
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.scss',
+  standalone: true,
+  templateUrl: './credit-table.component.html',
+  styleUrl: './credit-table.component.scss',
 })
-export class TableComponent {
+export class CreditTableComponent {
   constructor(public creditData: CreditDataService) {}
 }

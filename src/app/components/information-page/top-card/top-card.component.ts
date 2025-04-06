@@ -4,6 +4,7 @@ import { ITopUser } from '../../../shared/interfaces/interfaces';
 @Component({
   selector: 'app-top-card',
   imports: [],
+  standalone: true,
   templateUrl: './top-card.component.html',
   styleUrl: './top-card.component.scss',
 })
