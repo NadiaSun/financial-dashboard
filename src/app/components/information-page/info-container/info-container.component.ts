@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { InformationCardComponent } from '../information-card/information-card.component';
 import { TopCardComponent } from '../top-card/top-card.component';
 import { MetricsService } from '../../../core/services/metrics.service';
-import { InfoMetric } from '../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-info-container',

@@ -29,12 +29,15 @@ export class SelectionDateComponent {
     console.log(event.value);
     this.creditData.issuanceDateFrom.set(event.value);
   }
+
   public changeIssuanceTo(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.issuanceDateTo.set(event.value);
   }
+
   public changeReturnFrom(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.actualReturnDateFrom.set(event.value);
   }
+
   public changeReturnTo(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.actualReturnDateTo.set(event.value);
   }

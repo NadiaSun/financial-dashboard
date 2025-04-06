@@ -8,7 +8,5 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
   styleUrl: './table.component.scss',
 })
 export class TableComponent {
-  constructor(public creditData: CreditDataService) {
-    console.log('test2');
-  }
+  constructor(public creditData: CreditDataService) {}
 }

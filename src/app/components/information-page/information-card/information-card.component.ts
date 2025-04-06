@@ -8,15 +8,15 @@ import { InfoMetric, Metric } from '../../../shared/interfaces/interfaces';
   styleUrl: './information-card.component.scss',
 })
 export class InformationCardComponent {
-  public year = signal<string>('2020');
-
   @Input() infoMetric!: InfoMetric;
 
-  getMetricByYear(): Metric[] {
+  public year = signal<string>('2020');
+
+  public getMetricByYear(): Metric[] {
     return this.infoMetric.data.filter((metric) => metric.year === this.year());
   }
 
-  setYear(year: string) {
+  public setYear(year: string): void {
     this.year.set(year);
   }
 }

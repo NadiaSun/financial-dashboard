@@ -1,4 +1,4 @@
-import { Injectable, OnInit, computed, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { User } from '../../shared/interfaces/interfaces';
 import { ApiService } from './api.service';
 
@@ -12,6 +12,12 @@ export class CreditDataService {
   public actualReturnDateFrom = signal<string | null>(null);
   public actualReturnDateTo = signal<string | null>(null);
   public overdueCredits = signal<boolean>(false);
+
+  constructor(private apiService: ApiService) {
+    this.apiService.getUsers().subscribe((data) => {
+      this.users.set(data);
+    });
+  }
 
   public filteredUser = computed(() => {
     return this.users().filter((user) => {
@@ -60,10 +66,4 @@ export class CreditDataService {
 
   private checkDate = (date: string | null): Date | null =>
     date ? new Date(date) : null;
-
-  constructor(private apiService: ApiService) {
-    this.apiService.getUsers().subscribe((data) => {
-      this.users.set(data);
-    });
-  }
 }
