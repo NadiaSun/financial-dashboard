@@ -63,8 +63,7 @@ export class CreditDataService {
 
   constructor(private apiService: ApiService) {
     this.apiService.getUsers().subscribe((data) => {
-      console.log(data);
-      this.users.set(data.slice(0, 100));
+      this.users.set(data);
     });
   }
 }

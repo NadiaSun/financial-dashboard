@@ -12,3 +12,21 @@ export interface User {
   body: number;
   percent: number;
 }
+
+export interface Metric {
+  month: string;
+  counter: number;
+  year: string;
+  sum: number;
+}
+
+export interface InfoMetric {
+  title: string;
+  years: string[];
+  data: Metric[];
+}
+
+export interface ITopUser {
+  user: string;
+  counter: number;
+}

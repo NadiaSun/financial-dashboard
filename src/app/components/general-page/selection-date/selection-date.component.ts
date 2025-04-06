@@ -25,20 +25,21 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
 export class SelectionDateComponent {
   constructor(public creditData: CreditDataService) {}
 
-  changeIssuanceFrom(event: MatDatepickerInputEvent<any, any>): void {
+  public changeIssuanceFrom(event: MatDatepickerInputEvent<any, any>): void {
+    console.log(event.value);
     this.creditData.issuanceDateFrom.set(event.value);
   }
-  changeIssuanceTo(event: MatDatepickerInputEvent<any, any>): void {
+  public changeIssuanceTo(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.issuanceDateTo.set(event.value);
   }
-  changeReturnFrom(event: MatDatepickerInputEvent<any, any>): void {
+  public changeReturnFrom(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.actualReturnDateFrom.set(event.value);
   }
-  changeReturnTo(event: MatDatepickerInputEvent<any, any>): void {
+  public changeReturnTo(event: MatDatepickerInputEvent<any, any>): void {
     this.creditData.actualReturnDateTo.set(event.value);
   }
 
-  changeOverdueCredits() {
+  public changeOverdueCredits(): void {
     this.creditData.overdueCredits.update((value) => !value);
   }
 }
