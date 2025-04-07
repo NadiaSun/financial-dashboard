@@ -57,6 +57,9 @@ export class CreditDataService {
       ) {
         returnFilter = false;
       }
+      if (returnDateFromFilter && !actualReturnDate) {
+        returnFilter = false;
+      }
 
       if (
         returnDateToFilter &&
