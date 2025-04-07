@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { CreditDataService } from '../../../core/services/credit-data.service';
 
@@ -9,6 +9,15 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
   styleUrl: './table-pagination.component.scss',
 })
 export class TablePaginationComponent {
+  public page = computed(() => {
+    this.navigation.currentPage();
+    if (this.getTotal() === 0) {
+      return 0;
+    } else {
+      return this.navigation.currentPage();
+    }
+  });
+
   constructor(
     public creditData: CreditDataService,
     public navigation: NavigationService

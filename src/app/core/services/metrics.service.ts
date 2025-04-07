@@ -16,6 +16,7 @@ export class MetricsService {
   public dataMetric = computed(() => {
     return this.creditDate.users();
   });
+
   public infoMetric = signal<InfoMetric>(this.getCreditsByMonth());
 
   public setInfoMetric(type: string): void {
