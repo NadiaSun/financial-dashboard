@@ -12,6 +12,7 @@ An interactive dashboard for monitoring financial data, built with Angular.
 ## Technologies
 
 - [Angular 19](https://angular.io/)
+- [ng-bootstrap]
 - TypeScript
 - SCSS
 - RxJS
@@ -46,3 +47,12 @@ ng build --prod
 # The application will be available at:
 http://localhost:4200
 ```
+
+## Authors and Contributions
+
+Developed by: Nadia Kurakina
+Issues and pull requests are welcome!
+
+## License
+
+[MIT](LICENSE)
