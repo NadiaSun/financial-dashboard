@@ -7,13 +7,11 @@ export class NavigationService {
   currentPage = signal<number>(1);
   itemsPerPage = signal<number>(10);
 
-  constructor() {}
-
-  public nextPage(): void {
+  nextPage(): void {
     this.currentPage.update((value) => value + 1);
   }
 
-  public previousPage(): void {
+  previousPage(): void {
     this.currentPage.update((value) => value - 1);
   }
 }

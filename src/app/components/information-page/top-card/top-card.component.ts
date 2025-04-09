@@ -1,4 +1,9 @@
-import { Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  input,
+} from '@angular/core';
 import { ITopUser } from '../../../shared/interfaces/interfaces';
 
 @Component({
@@ -7,8 +12,9 @@ import { ITopUser } from '../../../shared/interfaces/interfaces';
   standalone: true,
   templateUrl: './top-card.component.html',
   styleUrl: './top-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopCardComponent {
-  @Input() topUsers!: ITopUser[];
-  @Input() title: string = 'ТОП-10';
+  topUsers = input<ITopUser[]>([]);
+  title = input<string>('ТОП-10');
 }

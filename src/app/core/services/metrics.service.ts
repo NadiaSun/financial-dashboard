@@ -13,13 +13,13 @@ import {
 export class MetricsService {
   private creditDate: CreditDataService = inject(CreditDataService);
 
-  public dataMetric = computed(() => {
+  dataMetric = computed(() => {
     return this.creditDate.users();
   });
 
-  public infoMetric = signal<InfoMetric>(this.getCreditsByMonth());
+  infoMetric = signal<InfoMetric>(this.getCreditsByMonth());
 
-  public setInfoMetric(type: string): void {
+  setInfoMetric(type: string): void {
     let metric = this.getCreditsByMonth();
     switch (type) {
       case 'credits':
@@ -161,21 +161,21 @@ export class MetricsService {
     };
   }
 
-  public getTopUsersByCredits(): ITopUser[] {
+  getTopUsersByCredits(): ITopUser[] {
     return this.getTopUsers(
       (metric) => 1,
       () => true
     );
   }
 
-  public getTopUsersByPercent(): ITopUser[] {
+  getTopUsersByPercent(): ITopUser[] {
     return this.getTopUsers(
       (metric) => metric.percent,
       (metric) => !!metric.actual_return_date
     );
   }
 
-  public getTopUsersByPercentRatio(): ITopUser[] {
+  getTopUsersByPercentRatio(): ITopUser[] {
     return this.getTopUsers(
       (metric) => metric.percent / metric.body,
       (metric) => !!metric.actual_return_date

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of, take } from 'rxjs';
 import { User } from '../../shared/interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
@@ -8,7 +8,7 @@ import { environment } from '../../environments/environments';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${environment.apiUrl}`).pipe(

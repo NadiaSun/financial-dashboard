@@ -1,8 +1,3 @@
-// export interface Environment {
-//   production: boolean;
-//   apiUrl: string;
-// }
-
 export interface User {
   id: number;
   user: string;
