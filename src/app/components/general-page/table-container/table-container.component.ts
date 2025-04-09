@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CreditTableComponent } from '../credit-table/credit-table.component';
 import { SelectionDateComponent } from '../selection-date/selection-date.component';
 import { TablePaginationComponent } from '../table-pagination/table-pagination.component';
@@ -13,5 +13,6 @@ import { TablePaginationComponent } from '../table-pagination/table-pagination.c
   ],
   templateUrl: './table-container.component.html',
   styleUrl: './table-container.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableContainerComponent {}

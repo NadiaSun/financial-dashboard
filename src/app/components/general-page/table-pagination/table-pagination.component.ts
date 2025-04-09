@@ -1,4 +1,9 @@
-import { Component, computed } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { NavigationService } from '../../../core/services/navigation.service';
 import { CreditDataService } from '../../../core/services/credit-data.service';
 
@@ -7,9 +12,13 @@ import { CreditDataService } from '../../../core/services/credit-data.service';
   imports: [],
   templateUrl: './table-pagination.component.html',
   styleUrl: './table-pagination.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TablePaginationComponent {
-  public page = computed(() => {
+  creditData = inject(CreditDataService);
+  navigation = inject(NavigationService);
+
+  page = computed(() => {
     this.navigation.currentPage();
     if (this.getTotal() === 0) {
       return 0;
@@ -18,30 +27,25 @@ export class TablePaginationComponent {
     }
   });
 
-  constructor(
-    public creditData: CreditDataService,
-    public navigation: NavigationService
-  ) {}
-
-  public setNextPage(): void {
+  setNextPage(): void {
     const totalPages = this.getTotal();
     if (this.navigation.currentPage() < totalPages) {
       this.navigation.nextPage();
     }
   }
 
-  public setPreviousPage(): void {
+  setPreviousPage(): void {
     if (this.navigation.currentPage() > 1) {
       this.navigation.previousPage();
     }
   }
 
-  public checkPrevious(): boolean {
+  checkPrevious(): boolean {
     const total = this.getTotal();
     return this.navigation.currentPage() === total;
   }
 
-  public getTotal(): number {
+  getTotal(): number {
     return Math.ceil(
       this.creditData.filteredUser().length / this.navigation.itemsPerPage()
     );

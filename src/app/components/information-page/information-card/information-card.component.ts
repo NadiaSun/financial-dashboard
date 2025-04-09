@@ -1,4 +1,10 @@
-import { Component, Input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  input,
+  signal,
+} from '@angular/core';
 import { InfoMetric, Metric } from '../../../shared/interfaces/interfaces';
 
 @Component({
@@ -7,17 +13,23 @@ import { InfoMetric, Metric } from '../../../shared/interfaces/interfaces';
   standalone: true,
   templateUrl: './information-card.component.html',
   styleUrl: './information-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InformationCardComponent {
-  @Input() infoMetric!: InfoMetric;
+  infoMetric = input<InfoMetric>();
 
-  public year = signal<string>('2020');
+  year = signal<string>('2020');
 
-  public getMetricByYear(): Metric[] {
-    return this.infoMetric.data.filter((metric) => metric.year === this.year());
+  getMetricByYear(): Metric[] {
+    const metric = this.infoMetric();
+
+    if (metric) {
+      return metric.data.filter((m) => m.year === this.year());
+    }
+    return [];
   }
 
-  public setYear(year: string): void {
+  setYear(year: string): void {
     this.year.set(year);
   }
 }

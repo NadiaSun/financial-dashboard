@@ -1,92 +1,106 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, OnDestroy, computed, inject, signal } from '@angular/core';
 import { User } from '../../shared/interfaces/interfaces';
 import { ApiService } from './api.service';
+import { Subject, first, takeUntil } from 'rxjs';
+import { parseDate, parseNullableDate } from '../../shared/utils/utils';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CreditDataService {
-  public users = signal<User[]>([]);
-  public issuanceDateFrom = signal<string | null>(null);
-  public issuanceDateTo = signal<string | null>(null);
-  public actualReturnDateFrom = signal<string | null>(null);
-  public actualReturnDateTo = signal<string | null>(null);
-  public overdueCredits = signal<boolean>(false);
-
-  constructor(private apiService: ApiService) {
-    this.apiService.getUsers().subscribe((data) => {
+export class CreditDataService implements OnDestroy {
+  private apiService = inject(ApiService);
+  private destroy$ = new Subject<void>();
+  private _ = this.apiService
+    .getUsers()
+    .pipe(first(), takeUntil(this.destroy$))
+    .subscribe((data) => {
       this.users.set(data);
     });
-  }
 
-  public filteredUser = computed(() => {
+  users = signal<User[]>([]);
+  issuanceDateFrom = signal<string | null>(null);
+  issuanceDateTo = signal<string | null>(null);
+  actualReturnDateFrom = signal<string | null>(null);
+  actualReturnDateTo = signal<string | null>(null);
+  overdueCredits = signal<boolean>(false);
+
+  filteredUser = computed(() => {
     return this.users().filter((user) => {
-      let overdueFilter: boolean = true;
-      let returnFilter: boolean = true;
-      let issuanceFilter: boolean = true;
+      const returnDate = parseDate(user.return_date);
+      const issuanceDate = parseDate(user.issuance_date);
+      const actualReturn = parseNullableDate(user.actual_return_date);
+      const issuanceFrom = parseNullableDate(this.issuanceDateFrom());
+      const issuanceTo = parseNullableDate(this.issuanceDateTo());
+      const returnFrom = parseNullableDate(this.actualReturnDateFrom());
+      const returnTo = parseNullableDate(this.actualReturnDateTo());
 
-      const returnDate = this.checkDate(user.return_date);
-      const issuanceDate = this.checkDate(user.issuance_date);
-      const actualReturnDate = this.checkNull(user.actual_return_date);
-      const issuanceDateFromFilter = this.checkNull(this.issuanceDateFrom());
-      const issuanceDateToFilter = this.checkNull(this.issuanceDateTo());
-      const returnDateFromFilter = this.checkNull(this.actualReturnDateFrom());
-      const returnDateToFilter = this.checkNull(this.actualReturnDateTo());
-      const today = new Date();
+      const issuanceFilter = this.isIssuanceValid(
+        issuanceDate,
+        issuanceFrom,
+        issuanceTo
+      );
+      const returnFilter = this.isReturnValid(
+        actualReturn,
+        returnFrom,
+        returnTo
+      );
+      const overdueFilter = this.isOverdueValid(actualReturn, returnDate);
 
-      if (
-        issuanceDateFromFilter &&
-        issuanceDate &&
-        issuanceDate < issuanceDateFromFilter
-      ) {
-        issuanceFilter = false;
-      }
-
-      if (
-        issuanceDateToFilter &&
-        issuanceDate &&
-        issuanceDate > issuanceDateToFilter
-      ) {
-        issuanceFilter = false;
-      }
-
-      if (
-        returnDateFromFilter &&
-        actualReturnDate &&
-        actualReturnDate < returnDateFromFilter
-      ) {
-        returnFilter = false;
-      }
-      if (returnDateFromFilter && !actualReturnDate) {
-        returnFilter = false;
-      }
-
-      if (
-        returnDateToFilter &&
-        actualReturnDate &&
-        actualReturnDate > returnDateToFilter
-      ) {
-        returnFilter = false;
-      }
-
-      if (this.overdueCredits()) {
-        if (actualReturnDate && returnDate) {
-          overdueFilter = actualReturnDate > returnDate;
-        } else if (returnDate) {
-          overdueFilter = returnDate < today;
-        }
-      }
       return issuanceFilter && returnFilter && overdueFilter;
     });
   });
 
-  private checkDate = (date: string): Date => new Date(date);
-
-  private checkNull(value: string | null): Date | null {
-    if (value) {
-      return this.checkDate(value);
-    } else {
-      return null;
+  private isIssuanceValid(
+    issuanceDate: Date,
+    issuanceFrom: Date | null,
+    issuanceTo: Date | null
+  ): boolean {
+    if (issuanceFrom && issuanceDate && issuanceDate < issuanceFrom) {
+      return false;
     }
+    if (issuanceTo && issuanceDate && issuanceDate > issuanceTo) {
+      return false;
+    }
+    return true;
+  }
+
+  private isReturnValid(
+    actualReturn: Date | null,
+    returnFrom: Date | null,
+    returnTo: Date | null
+  ): boolean {
+    if (!actualReturn) {
+      if (returnTo) {
+        return false;
+      }
+      if (returnFrom) {
+        return false;
+      }
+    } else {
+      if (returnFrom && actualReturn < returnFrom) {
+        return false;
+      }
+      if (returnTo && actualReturn > returnTo) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private isOverdueValid(actualReturn: Date | null, returnDate: Date): boolean {
+    if (this.overdueCredits()) {
+      const today = new Date();
+      if (actualReturn && returnDate) {
+        return actualReturn > returnDate;
+      } else if (returnDate) {
+        return returnDate < today;
+      }
+    }
+    return true;
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
