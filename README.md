@@ -1,6 +1,7 @@
 # Financial Dashboard
 
 An interactive dashboard for monitoring financial data, built with Angular.
+
 Website: https://financial-dashboard-omega-ashy.vercel.app/
 
 ## Features
